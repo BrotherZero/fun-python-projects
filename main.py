@@ -247,7 +247,7 @@ if args.command == "show":
 
     else:
         Display.rich_display(Tasks)
-        
+
 if  args.command == "popeye":
     Display.popeye_display()
 
