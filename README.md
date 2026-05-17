@@ -14,7 +14,7 @@ A clean command-line task tracker for managing what you need to do, what is in p
 ## Requirements
 
 - Python 3.10 or newer
-- Optional: `rich` for prettier terminal output
+-  `rich` for prettier terminal output
 
 Install the optional display dependency:
 
