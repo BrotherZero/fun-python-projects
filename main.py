@@ -1,11 +1,15 @@
 from datetime import datetime
 import json
 from rich.console import Console
+from rich.panel import Panel
 from rich.table import Table
+from rich.align import Align
+from rich.text import Text
+import time
 import argparse
 
 
-
+# Display 
 class Display:
 
     @staticmethod
@@ -54,6 +58,8 @@ class Display:
             )
         print("=" * 90)
 
+
+#  -------- CLI Interface --------
 parser = argparse.ArgumentParser(description="Task Manager CLI")
 
 subparsers = parser.add_subparsers(dest="command")
@@ -78,6 +84,8 @@ delete_parser.add_argument("-i", "--id", type=int, required=True)
 show_parser = subparsers.add_parser("show")
 show_parser.add_argument("-c", "--classic", action="store_true")
 show_parser.add_argument("-s", "--status",choices=["todo", "in-progress", "done"], help="Filter tasks by status")
+# -------- INTRO---------
+intro_parser = subparsers.add_parser("intro")
 
 args = parser.parse_args()
 
@@ -88,6 +96,7 @@ try:
 except FileNotFoundError:
     Tasks = []
 
+# ADD 
 if args.command == "add":
   
     task = {
@@ -105,6 +114,7 @@ if args.command == "add":
 
     print("Task added successfully")
 
+# UPDATE
 elif args.command == "update":
     found = False
 
@@ -124,6 +134,7 @@ elif args.command == "update":
     else:
         print("Task not found")
 
+# DELETE 
 elif args.command == "delete":
     found = False
     for task in Tasks:
@@ -138,6 +149,7 @@ elif args.command == "delete":
     else:
         print("Task not found")
 
+# SHOW
 if args.command == "show":
 
     filtered_tasks = Tasks
@@ -147,5 +159,56 @@ if args.command == "show":
 
     else:
         Display.rich_display(Tasks)
+        
+if args.command is None or args.command == "intro":
+
+    console = Console()
+
+    text =r"""
+    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⠟⠛⠛⠛⠻⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠋⠁⠀⢀⣠⣤⣴⣦⣤⣄⡈⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿ 
+    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠁⠀⣠⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⡈⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠃⠀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣇⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⣿⣿⣿⣿⣿⣿⣿⣿
+    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠁⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣿⣟⣛⣻⣧⣬⣭⣉⣙⡛⠿⢿⣿⣿⣿⡿⣫⢂⣽⣷⣽⣿⣿⣿⣿⣿⣿
+    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⠁⣰⣿⣿⣿⣿⣿⠟⢻⣿⣟⣾⣯⣽⣷⣾⣭⣽⣟⠛⣛⣛⣛⡿⣶⣄⠉⢿⣿⣧⠳⣿⣿⣿⣿⣮⢿⣿⣿⣿⣿-------------------------------
+    ⣿⣿⣿⣿⣿⣿⣿⡿⠟⢠⣿⣿⣿⡿⠋⠀⣀⣬⣯⣿⣿⣿⣿⣿⣿⣿⢣⣶⣮⣦⡸⣭⣿⣻⣿⡆⠈⣿⣿⣗⡵⢫⣿⠿⢃⣾⣿⣿⣿⣿
+    ⣿⣿⣿⣿⣿⡿⠋⣤⣶⣾⣿⡿⠋⠀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣎⣿⣿⣿⣷⡘⣿⣿⡿⠀⣰⡿⡫⣪⣾⣷⣶⣾⣿⣿⣿⣿⣿⣿  
+    ⣿⣿⣿⣿⡟⠀⣼⣿⣿⣿⠋⠀⢠⣾⣿⡿⢛⣛⡛⠛⢿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢿⣧⠈⣥⣴⣾⣫⢾⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿   
+    ⣿⣿⣿⣿⣇⠀⣿⣿⣿⠃⠀⣴⣿⣿⣯⣿⣿⣿⣿⣿⣷⣤⣝⠻⢿⣿⣿⣿⣿⣇⠀⢻⣧⢉⣭⣥⣥⣄⢤⣤⣄⡉⠻⢿⣿⣿⣿⣿⣿⣿     Github  -->  BrotherZero
+    ⣿⣿⣿⣿⣿⣆⠘⢿⣿⡀⢰⣿⣿⢷⣝⣿⣿⣿⣿⣿⣿⣿⡿⠿⠶⣭⣙⣫⣿⣿⣶⣟⣵⣿⣿⣿⣿⣿⡇⢿⣿⣿⣆⠈⢻⣿⣿⣿⣿⣿    Telegram --> t.me/BrotherZero  
+    ⣿⣿⣿⣿⣿⣿⣷⣤⣈⠉⢸⣿⣿⣷⣯⣿⣿⣿⣿⣿⣿⣷⣾⣿⣷⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⣼⣿⣿⣿⡇⠀⣿⣿⣿⣿⣿      
+    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄⠈⣿⣿⣿⣿⣿⣿⣿⣿⣛⣻⢿⡿⢿⣿⡿⠿⢫⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⣹⣿⣿⣿⣿⡇⠀⣽⣿⣿⣿⣿
+    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄⠘⣿⣿⣿⣿⣿⣿⣿⣿⣭⣍⣛⣛⣓⣟⣛⣡⡙⠿⣿⣿⣿⣿⠿⣟⣥⣾⣿⣿⣿⣿⣿⠃⢠⣿⣿⣿⣿⣿              💬💬💬
+    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠆⣘⣛⣿⣿⣿⣿⣿⣇⠉⠉⠉⠉⠉⠉⠉⠁⠀⣾⣶⣿⣿⣶⣿⣿⣿⣿⣿⡟⣿⡿⠃⢀⣾⣿⣿⣿⣿⣿-------------------------------
+    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢰⣿⣿⡛⢿⣿⣿⣿⣿⣆⣤⣤⣤⣄⣤⣤⣀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠋⣀⣴⣿⣿⣿⣿⣿⣿⣿
+    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⡈⠹⢿⣿⣷⣿⡟⢿⣿⣿⣮⣻⣿⣿⣿⡿⣿⡾⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠁⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⣀⠉⠛⣉⣤⡀⠙⢿⣿⣟⡿⣿⣿⠿⣫⣾⣿⣿⣿⣿⣿⣿⣿⣿⠟⢀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⡀⠙⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠛⠁⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⣀⡉⠉⠛⠛⠿⠿⠛⠛⠉⠁⢀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣶⣤⣤⣤⣤⣤⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿            
+    """
+    title = Text("Task Manager", style="bold magenta")
+    subtitle = Text("Welcome bzero 🚀", style="bold cyan")
+    panel = Panel(
+    Align.center(text),
+    title=title,
+    subtitle=subtitle,
+    border_style="bright_magenta",
+    padding=(1,4)
+    )
+
+
+    def slow_print(text, delay=0.001):
+        for char in text:
+            console.print(char, end="")
+            time.sleep(delay)
+        print()
+
+    slow_print(text)
+
 
 
