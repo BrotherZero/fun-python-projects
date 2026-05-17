@@ -40,24 +40,112 @@ class Display:
             )
 
         console.print(table)
+
     @staticmethod
-    def core_display(tasks_list):
-        with open("tasks.json", "r") as f:
-            Tasks = json.load(f)
+    def popeye_display():
+        console = Console()
 
-        print("=" * 90)
-        print(f"{'ID':<5} {'Name':<15} {'Description':<25} {'Status':<10} {'Created At':<20} {'Updated At':<20}")
-        print("=" * 90)
+        intro =r"""
+        ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+        ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+        ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⠟⠛⠛⠛⠻⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+        ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠋⠁⠀⢀⣠⣤⣴⣦⣤⣄⡈⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿ 
+        ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠁⠀⣠⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⡈⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿               
+        ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠃⠀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣇⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⣿⣿⣿⣿⣿⣿⣿⣿
+        ⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠁⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣿⣟⣛⣻⣧⣬⣭⣉⣙⡛⠿⢿⣿⣿⣿⡿⣫⢂⣽⣷⣽⣿⣿⣿⣿⣿⣿
+        ⣿⣿⣿⣿⣿⣿⣿⣿⣿⠁⣰⣿⣿⣿⣿⣿⠟⢻⣿⣟⣾⣯⣽⣷⣾⣭⣽⣟⠛⣛⣛⣛⡿⣶⣄⠉⢿⣿⣧⠳⣿⣿⣿⣿⣮⢿⣿⣿⣿⣿-------------------------------------
+        ⣿⣿⣿⣿⣿⣿⣿⡿⠟⢠⣿⣿⣿⡿⠋⠀⣀⣬⣯⣿⣿⣿⣿⣿⣿⣿⢣⣶⣮⣦⡸⣭⣿⣻⣿⡆⠈⣿⣿⣗⡵⢫⣿⠿⢃⣾⣿⣿⣿⣿
+        ⣿⣿⣿⣿⣿⡿⠋⣤⣶⣾⣿⡿⠋⠀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣎⣿⣿⣿⣷⡘⣿⣿⡿⠀⣰⡿⡫⣪⣾⣷⣶⣾⣿⣿⣿⣿⣿⣿  
+        ⣿⣿⣿⣿⡟⠀⣼⣿⣿⣿⠋⠀⢠⣾⣿⡿⢛⣛⡛⠛⢿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢿⣧⠈⣥⣴⣾⣫⢾⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿   
+        ⣿⣿⣿⣿⣇⠀⣿⣿⣿⠃⠀⣴⣿⣿⣯⣿⣿⣿⣿⣿⣷⣤⣝⠻⢿⣿⣿⣿⣿⣇⠀⢻⣧⢉⣭⣥⣥⣄⢤⣤⣄⡉⠻⢿⣿⣿⣿⣿⣿⣿     Github  -->  BrotherZero
+        ⣿⣿⣿⣿⣿⣆⠘⢿⣿⡀⢰⣿⣿⢷⣝⣿⣿⣿⣿⣿⣿⣿⡿⠿⠶⣭⣙⣫⣿⣿⣶⣟⣵⣿⣿⣿⣿⣿⡇⢿⣿⣿⣆⠈⢻⣿⣿⣿⣿⣿    Telegram --> t.me/BrotherZero  
+        ⣿⣿⣿⣿⣿⣿⣷⣤⣈⠉⢸⣿⣿⣷⣯⣿⣿⣿⣿⣿⣿⣷⣾⣿⣷⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⣼⣿⣿⣿⡇⠀⣿⣿⣿⣿⣿      
+        ⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄⠈⣿⣿⣿⣿⣿⣿⣿⣿⣛⣻⢿⡿⢿⣿⡿⠿⢫⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⣹⣿⣿⣿⣿⡇⠀⣽⣿⣿⣿⣿
+        ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄⠘⣿⣿⣿⣿⣿⣿⣿⣿⣭⣍⣛⣛⣓⣟⣛⣡⡙⠿⣿⣿⣿⣿⠿⣟⣥⣾⣿⣿⣿⣿⣿⠃⢠⣿⣿⣿⣿⣿              💬💬💬
+        ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠆⣘⣛⣿⣿⣿⣿⣿⣇⠉⠉⠉⠉⠉⠉⠉⠁⠀⣾⣶⣿⣿⣶⣿⣿⣿⣿⣿⡟⣿⡿⠃⢀⣾⣿⣿⣿⣿⣿-------------------------------------
+        ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢰⣿⣿⡛⢿⣿⣿⣿⣿⣆⣤⣤⣤⣄⣤⣤⣀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠋⣀⣴⣿⣿⣿⣿⣿⣿⣿  
+        ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⡈⠹⢿⣿⣷⣿⡟⢿⣿⣿⣮⣻⣿⣿⣿⡿⣿⡾⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠁⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+        ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⣀⠉⠛⣉⣤⡀⠙⢿⣿⣟⡿⣿⣿⠿⣫⣾⣿⣿⣿⣿⣿⣿⣿⣿⠟⢀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿ " Ya gots a face I likes to touch "
+        ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⡀⠙⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠛⠁⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+        ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⣀⡉⠉⠛⠛⠿⠿⠛⠛⠉⠁⢀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿  
+        ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣶⣤⣤⣤⣤⣤⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+        ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+        ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿            
+        """
+        
 
-        for task in Tasks:
+        def slow_print(text, delay=0.001):
+            for char in text:
+                console.print(char, end="")
+                time.sleep(delay)
 
-            print(
-            f"{task['id']:<5} {str(task.get('name') or ''):<15} {str(task.get('Description') or ''):<25} "
-            f"{str(task.get('Status') or ''):<10} {task['createdAt']:<20} "
-            f"{task['updatedAt'] if 'updatedAt' in task else "None"}"
-            )
-        print("=" * 90)
+        title = Text("Welcome", style="bold magenta")
+        subtitle = Text("bzero 🚀", style="bold cyan")
+        panel = Panel(
+        Align.center(intro),
+        title=title,
+        subtitle=subtitle,
+        border_style="bright_magenta",
+        padding=(1,4)
+        )
 
+        slow_print(intro)
+    
+
+    @staticmethod
+    def start_display():
+        console = Console()
+        title = Text("Welcome", style="bold magenta")
+        subtitle = Text("bzero 🚀", style="bold cyan")
+
+        HELP_TEXT = """
+            ## Task-Tracker CLI help ##
+
+            Run the app:
+            python3 main.py <command> [options]
+
+            General help:
+            python3 main.py --help
+            python3 main.py add --help
+            python3 main.py update --help
+            python3 main.py show --help
+
+            Commands:
+            add     Add a new task
+                    python3 main.py add -n "Buy groceries" -d "Milk and bread" -s todo
+
+            show    Show all tasks, or filter by status
+                    python3 main.py show
+                    python3 main.py show -s todo
+                    python3 main.py show -s in-progress
+                    python3 main.py show -s done
+
+            update  Update a task by ID
+                    python3 main.py update -i 1 -n "Buy groceries and cook dinner"
+                    python3 main.py update -i 1 -s done
+
+            delete  Delete a task by ID
+                    python3 main.py delete -i 1
+            
+            popeye  "Blow me down!"
+
+            Statuses:
+            todo, in-progress, done
+
+            Data file:
+            main.py stores tasks in tasks.json in the directory where you run the command.
+            """
+
+        panel = Panel(
+                Align.center(HELP_TEXT),
+                title=title,
+                subtitle=subtitle,
+                border_style="bright_magenta",
+                padding=(1,4)
+                )
+
+        
+        console.print(panel)
 
 #  -------- CLI Interface --------
 parser = argparse.ArgumentParser(description="Task Manager CLI")
@@ -84,8 +172,8 @@ delete_parser.add_argument("-i", "--id", type=int, required=True)
 show_parser = subparsers.add_parser("show")
 show_parser.add_argument("-c", "--classic", action="store_true")
 show_parser.add_argument("-s", "--status",choices=["todo", "in-progress", "done"], help="Filter tasks by status")
-# -------- INTRO---------
-intro_parser = subparsers.add_parser("intro")
+# -------- popeye---------
+popeye_parser = subparsers.add_parser("popeye")
 
 args = parser.parse_args()
 
@@ -160,55 +248,10 @@ if args.command == "show":
     else:
         Display.rich_display(Tasks)
         
-if args.command is None or args.command == "intro":
+if  args.command == "popeye":
+    Display.popeye_display()
 
-    console = Console()
-
-    text =r"""
-    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⠟⠛⠛⠛⠻⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠋⠁⠀⢀⣠⣤⣴⣦⣤⣄⡈⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿ 
-    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠁⠀⣠⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⡈⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠃⠀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣇⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⣿⣿⣿⣿⣿⣿⣿⣿
-    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠁⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣿⣟⣛⣻⣧⣬⣭⣉⣙⡛⠿⢿⣿⣿⣿⡿⣫⢂⣽⣷⣽⣿⣿⣿⣿⣿⣿
-    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⠁⣰⣿⣿⣿⣿⣿⠟⢻⣿⣟⣾⣯⣽⣷⣾⣭⣽⣟⠛⣛⣛⣛⡿⣶⣄⠉⢿⣿⣧⠳⣿⣿⣿⣿⣮⢿⣿⣿⣿⣿-------------------------------
-    ⣿⣿⣿⣿⣿⣿⣿⡿⠟⢠⣿⣿⣿⡿⠋⠀⣀⣬⣯⣿⣿⣿⣿⣿⣿⣿⢣⣶⣮⣦⡸⣭⣿⣻⣿⡆⠈⣿⣿⣗⡵⢫⣿⠿⢃⣾⣿⣿⣿⣿
-    ⣿⣿⣿⣿⣿⡿⠋⣤⣶⣾⣿⡿⠋⠀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣎⣿⣿⣿⣷⡘⣿⣿⡿⠀⣰⡿⡫⣪⣾⣷⣶⣾⣿⣿⣿⣿⣿⣿  
-    ⣿⣿⣿⣿⡟⠀⣼⣿⣿⣿⠋⠀⢠⣾⣿⡿⢛⣛⡛⠛⢿⣿⣿⣿⣿⣿⣿⣿⣿⡿⢿⣧⠈⣥⣴⣾⣫⢾⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿   
-    ⣿⣿⣿⣿⣇⠀⣿⣿⣿⠃⠀⣴⣿⣿⣯⣿⣿⣿⣿⣿⣷⣤⣝⠻⢿⣿⣿⣿⣿⣇⠀⢻⣧⢉⣭⣥⣥⣄⢤⣤⣄⡉⠻⢿⣿⣿⣿⣿⣿⣿     Github  -->  BrotherZero
-    ⣿⣿⣿⣿⣿⣆⠘⢿⣿⡀⢰⣿⣿⢷⣝⣿⣿⣿⣿⣿⣿⣿⡿⠿⠶⣭⣙⣫⣿⣿⣶⣟⣵⣿⣿⣿⣿⣿⡇⢿⣿⣿⣆⠈⢻⣿⣿⣿⣿⣿    Telegram --> t.me/BrotherZero  
-    ⣿⣿⣿⣿⣿⣿⣷⣤⣈⠉⢸⣿⣿⣷⣯⣿⣿⣿⣿⣿⣿⣷⣾⣿⣷⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡟⣼⣿⣿⣿⡇⠀⣿⣿⣿⣿⣿      
-    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄⠈⣿⣿⣿⣿⣿⣿⣿⣿⣛⣻⢿⡿⢿⣿⡿⠿⢫⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⣹⣿⣿⣿⣿⡇⠀⣽⣿⣿⣿⣿
-    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄⠘⣿⣿⣿⣿⣿⣿⣿⣿⣭⣍⣛⣛⣓⣟⣛⣡⡙⠿⣿⣿⣿⣿⠿⣟⣥⣾⣿⣿⣿⣿⣿⠃⢠⣿⣿⣿⣿⣿              💬💬💬
-    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠆⣘⣛⣿⣿⣿⣿⣿⣇⠉⠉⠉⠉⠉⠉⠉⠁⠀⣾⣶⣿⣿⣶⣿⣿⣿⣿⣿⡟⣿⡿⠃⢀⣾⣿⣿⣿⣿⣿-------------------------------
-    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⢰⣿⣿⡛⢿⣿⣿⣿⣿⣆⣤⣤⣤⣄⣤⣤⣀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠋⣀⣴⣿⣿⣿⣿⣿⣿⣿
-    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⡈⠹⢿⣿⣷⣿⡟⢿⣿⣿⣮⣻⣿⣿⣿⡿⣿⡾⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠁⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⣀⠉⠛⣉⣤⡀⠙⢿⣿⣟⡿⣿⣿⠿⣫⣾⣿⣿⣿⣿⣿⣿⣿⣿⠟⢀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⡀⠙⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠛⠁⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⣀⡉⠉⠛⠛⠿⠿⠛⠛⠉⠁⢀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣶⣤⣤⣤⣤⣤⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-    ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿            
-    """
-    title = Text("Task Manager", style="bold magenta")
-    subtitle = Text("Welcome bzero 🚀", style="bold cyan")
-    panel = Panel(
-    Align.center(text),
-    title=title,
-    subtitle=subtitle,
-    border_style="bright_magenta",
-    padding=(1,4)
-    )
-
-
-    def slow_print(text, delay=0.001):
-        for char in text:
-            console.print(char, end="")
-            time.sleep(delay)
-        print()
-
-    slow_print(text)
-
-
+if args.command is None :
+    Display.start_display()
+    
 
