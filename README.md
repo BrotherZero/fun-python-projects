@@ -121,3 +121,7 @@ Tasks are stored in `tasks.json`:
 - If `tasks.json` does not exist, the app creates it automatically.
 - If `rich` is not installed, the app still works and uses classic text output.
 - Task IDs keep increasing from the highest existing ID, so deleting a task does not reuse old IDs.
+
+
+<img width="1118" height="662" alt="image" src="https://github.com/user-attachments/assets/6f51c0f2-1651-401b-bfbc-0395878f5fa1" />
+
